@@ -1,6 +1,6 @@
 import { ExceptionHandlerExecutor } from '../../../models/exception-handlers/exception-handler-executor';
 import { Executable } from '../../../models/executable/executable';
-import { ServiceRuntimeChain } from '../../../models/service-runtime-chains/service-runtime-chain';
+import { RuntimeChain } from '../../../models/runtime-chains/runtime-chain';
 import { RuntimeChainServiceExceptions } from './runtime-chain-service.exceptions';
 import { IRuntimeChainService } from './runtime-chain-service.interface';
 import { RuntimeChainServiceValidations } from './runtime-chain-service.validations';
@@ -14,7 +14,7 @@ export class RuntimeChainService implements IRuntimeChainService {
         this.exceptions = new RuntimeChainServiceExceptions();
     }
 
-    createRuntimeChain<T>(executable: Executable<T>): ServiceRuntimeChain<T> {
+    createRuntimeChain<T>(executable: Executable<T>): RuntimeChain<T> {
         return this.exceptions.createRuntimeChainHandler(() => {
             this.validations.validateExecutable(executable);
             return this.instantiateRuntimeChain(executable);
@@ -22,7 +22,7 @@ export class RuntimeChainService implements IRuntimeChainService {
     }
 
     private instantiateRuntimeChain<T>(executable: Executable<T>) {
-        return new ServiceRuntimeChain<T>(
+        return new RuntimeChain<T>(
             () => this.execute(executable),
             (exceptionHandler) =>
                 this.exceptionHandler(exceptionHandler, executable)
@@ -36,7 +36,7 @@ export class RuntimeChainService implements IRuntimeChainService {
     private exceptionHandler<T>(
         executor: ExceptionHandlerExecutor<T>,
         executable: Executable<T>
-    ): ServiceRuntimeChain<T> {
+    ): RuntimeChain<T> {
         return this.exceptions.createRuntimeChainHandler(() => {
             this.validations.validateExceptionHandlerExecutor(executor);
             return this.instantiateRuntimeChain(() => executor(executable));
@@ -45,7 +45,7 @@ export class RuntimeChainService implements IRuntimeChainService {
 
     createAsyncRuntimeChain<T>(
         executable: Executable<Promise<T>>
-    ): ServiceRuntimeChain<Promise<T>> {
+    ): RuntimeChain<Promise<T>> {
         return this.exceptions.createRuntimeChainHandler(() => {
             this.validations.validateExecutable(executable);
             return this.instantiateAsyncRuntimeChain(executable);
@@ -55,7 +55,7 @@ export class RuntimeChainService implements IRuntimeChainService {
     private instantiateAsyncRuntimeChain<T>(
         executable: Executable<Promise<T>>
     ) {
-        return new ServiceRuntimeChain<Promise<T>>(
+        return new RuntimeChain<Promise<T>>(
             () => this.executeAsync(executable),
             (exceptionHandler) =>
                 this.exceptionHandlerAsync(exceptionHandler, executable)
@@ -71,7 +71,7 @@ export class RuntimeChainService implements IRuntimeChainService {
     private exceptionHandlerAsync<T>(
         executor: ExceptionHandlerExecutor<Promise<T>>,
         executable: Executable<Promise<T>>
-    ): ServiceRuntimeChain<Promise<T>> {
+    ): RuntimeChain<Promise<T>> {
         return this.exceptions.createRuntimeChainHandler(() => {
             this.validations.validateExceptionHandlerExecutor(executor);
             return this.instantiateRuntimeChain(() => executor(executable));

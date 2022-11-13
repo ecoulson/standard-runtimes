@@ -1,10 +1,10 @@
 import { Executable } from '../../models/executable/executable';
-import { ServiceRuntimeChain } from '../../models/service-runtime-chains/service-runtime-chain';
+import { RuntimeChain } from '../../models/runtime-chains/runtime-chain';
 
 export interface IServiceRuntimeClient {
-    createRuntime<T>(executable: Executable<T>): ServiceRuntimeChain<T>;
+    createRuntime<T>(executable: Executable<T>): RuntimeChain<T>;
 
     createAsyncRuntime<T>(
         executable: Executable<Promise<T>>
-    ): ServiceRuntimeChain<Promise<T>>;
+    ): RuntimeChain<Promise<T>>;
 }
