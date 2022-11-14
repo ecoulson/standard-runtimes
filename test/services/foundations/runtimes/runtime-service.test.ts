@@ -1,45 +1,43 @@
+import { Exception } from '@the-standard/exceptions';
 import { Action } from '@the-standard/types';
-import { anyOfClass, capture, instance, mock, verify, when } from 'ts-mockito';
-import { IIdBroker } from '../../../../src/brokers/ids/id-broker.interface';
-import { IRuntimeBroker } from '../../../../src/brokers/runtimes/runtime-broker.interface';
 import { Runtime } from '../../../../src/models/runtimes/runtime';
 import { RuntimeService } from '../../../../src/services/foundations/runtimes/runtime-service';
 
 describe('Runtime Service Test Suite', () => {
-    const mockedRuntimeBroker = mock<IRuntimeBroker>();
-    const mockedIdBroker = mock<IIdBroker>();
-    const service = new RuntimeService(
-        instance(mockedRuntimeBroker),
-        instance(mockedIdBroker)
-    );
+    const service = new RuntimeService<number>();
 
-    describe('createRuntime', () => {
-        test('Should create a runtime', () => {
-            const generatedId = '02f55cc3-b798-4b00-b460-296b3db3f6de';
+    describe('executeRuntime', () => {
+        test('Should execute a runtime successfully', () => {
+            const expectedResult = 2;
             const logic = () => {
-                return;
+                return expectedResult;
             };
-            const exceptionHandler = (logic: Action<void>) => logic();
-            const inputRuntime = new Runtime(
-                undefined,
-                logic,
-                exceptionHandler
-            );
-            const expectedRuntime = new Runtime(
-                generatedId,
-                logic,
-                exceptionHandler
-            );
-            when(mockedIdBroker.generateId()).thenReturn(generatedId);
-            when(mockedRuntimeBroker.storeRuntime(inputRuntime)).thenCall(
-                (x) => x
-            );
+            const exceptionHandler = (logic: Action<number>) => {
+                return logic();
+            };
+            const inputRuntime = new Runtime(logic, exceptionHandler);
 
-            const actualRuntime = service.createRuntime(inputRuntime);
-            expect(actualRuntime).toEqual(expectedRuntime);
+            const actualResult = service.executeRuntime(inputRuntime);
 
-            verify(mockedIdBroker.generateId()).once();
-            verify(mockedRuntimeBroker.storeRuntime(inputRuntime)).once();
+            expect(actualResult).toEqual(expectedResult);
+        });
+
+        test('Should execute a runtime that handles an exception', () => {
+            const logic: Action<number> = () => {
+                throw new Exception();
+            };
+            const exceptionHandler = (logic: Action<number>) => {
+                try {
+                    return logic();
+                } catch (error) {
+                    throw new Exception('Something went wrong.');
+                }
+            };
+            const inputRuntime = new Runtime(logic, exceptionHandler);
+            const expectedException = new Exception('Something went wrong.');
+
+            const action = () => service.executeRuntime(inputRuntime);
+            expect(action).toThrowException(expectedException);
         });
     });
 });

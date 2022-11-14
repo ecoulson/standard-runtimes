@@ -2,16 +2,11 @@ import { Runtime } from '../../../models/runtimes/runtime';
 import { IRuntimeService } from './runtime-service.interface';
 import { RuntimeServiceOperations } from './runtime-service.operations';
 
-export class RuntimeService
+export class RuntimeService<T>
     extends RuntimeServiceOperations
-    implements IRuntimeService
+    implements IRuntimeService<T>
 {
-    createRuntime<T>(runtime: Runtime<T>): Runtime<T> {
-        runtime.id = this.idBroker.generateId();
-        return this.runtimeBroker.storeRuntime(runtime);
-    }
-
-    executeRuntime<T>(runtime: Runtime<T>): T {
-        throw new Error('Method not implemented.');
+    executeRuntime(runtime: Runtime<T>): T {
+        return runtime.exceptionHandler!(() => runtime.logic!());
     }
 }

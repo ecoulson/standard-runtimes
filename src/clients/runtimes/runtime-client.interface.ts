@@ -1,3 +1,3 @@
-export interface IRuntimeClient {
-    execute<T>(): T;
+export interface IRuntimeClient<T> {
+    execute(): T;
 }

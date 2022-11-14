@@ -1,9 +1,8 @@
-import { Action, Func } from '@the-standard/types';
+import { Action, Func, Nullable } from '@the-standard/types';
 
 export class Runtime<T> {
     constructor(
-        public id?: string,
-        public logic?: Action<T>,
-        public exceptionHandler?: Func<T, [Action<T>]>
+        public logic: Nullable<Action<T>>,
+        public exceptionHandler: Nullable<Func<T, [Action<T>]>>
     ) {}
 }

@@ -46,6 +46,7 @@
     },
     "dependencies": {
         "@the-standard/exception-handlers": "^1.0.1",
+        "@the-standard/exceptions": "^1.0.5",
         "@the-standard/partials": "^1.0.1",
         "@the-standard/types": "^1.0.0",
         "uuid": "^9.0.0"
