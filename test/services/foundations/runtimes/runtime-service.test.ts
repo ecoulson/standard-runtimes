@@ -22,6 +22,18 @@ describe('Runtime Service Test Suite', () => {
             expect(actualResult).toEqual(expectedResult);
         });
 
+        test('Should execute a runtime with no exception handler', () => {
+            const expectedResult = 2;
+            const logic = () => {
+                return expectedResult;
+            };
+            const inputRuntime = new Runtime(logic);
+
+            const actualResult = service.executeRuntime(inputRuntime);
+
+            expect(actualResult).toEqual(expectedResult);
+        });
+
         test('Should execute a runtime that handles an exception', () => {
             const logic: Action<number> = () => {
                 throw new Exception();
