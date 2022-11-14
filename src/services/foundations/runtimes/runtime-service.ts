@@ -1,10 +1,11 @@
-import { IRuntimeBroker } from '../../../brokers/runtimes/runtime-broker.interface';
 import { Runtime } from '../../../models/runtimes/runtime';
 import { IRuntimeService } from './runtime-service.interface';
+import { RuntimeServiceOperations } from './runtime-service.operations';
 
-export class RuntimeService implements IRuntimeService {
-    constructor(private readonly runtimeBroker: IRuntimeBroker) {}
-
+export class RuntimeService
+    extends RuntimeServiceOperations
+    implements IRuntimeService
+{
     createRuntime<T>(runtime: Runtime<T>): Runtime<T> {
         throw new Error('Method not implemented.');
     }
