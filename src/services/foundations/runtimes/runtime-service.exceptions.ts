@@ -13,4 +13,13 @@ export class RuntimeServiceExceptions<T> {
             )
             .execute();
     }
+
+    protected executeAsyncRuntimeExceptionHandler(logic: Action<Promise<T>>) {
+        return tryCatch(logic)
+            .handle(
+                [IllegalRuntimeException, NullRuntimeException],
+                (exception) => new RuntimeValidationException(exception)
+            )
+            .execute();
+    }
 }

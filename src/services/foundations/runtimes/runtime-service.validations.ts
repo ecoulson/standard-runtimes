@@ -9,7 +9,7 @@ import { NullRuntimeException } from '../../../models/runtimes/exceptions/null-r
 import { Runtime } from '../../../models/runtimes/runtime';
 
 export class RuntimeServiceValidations<T> {
-    protected validateRuntime(runtime: Runtime<T>) {
+    protected validateRuntime(runtime: Runtime<T> | Runtime<Promise<T>>) {
         if (isNil(runtime)) {
             throw new NullRuntimeException();
         }
@@ -18,7 +18,9 @@ export class RuntimeServiceValidations<T> {
         ]);
     }
 
-    private createLogicValidationStep(runtime: Runtime<T>) {
+    private createLogicValidationStep(
+        runtime: Runtime<T> | Runtime<Promise<T>>
+    ) {
         return new ValidationStep(
             'logic',
             new ValidationRule(isNil(runtime.logic), 'Logic can not be null.')
