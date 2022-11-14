@@ -1,5 +1,4 @@
-import { Exception } from '@the-standard/exceptions';
-import { ExceptionData } from '@the-standard/exceptions/lib/models/exceptions/exception-data';
+import { Exception, ExceptionData } from '@the-standard/exceptions';
 import { Nullable } from '@the-standard/types';
 
 export class IllegalRuntimeException extends Exception {

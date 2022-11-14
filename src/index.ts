@@ -1,12 +1,12 @@
+import { Action } from '@the-standard/types';
 import { ServiceRuntimeClient } from './clients/service-runtimes/service-runtime-client';
-import { Executable } from './models/executable/executable';
 
 const client = new ServiceRuntimeClient();
 
-export function createRuntime<T>(executable: Executable<T>) {
+export function createRuntime<T>(executable: Action<T>) {
     return client.createRuntime<T>(executable);
 }
 
-export function createAsyncRuntime<T>(executable: Executable<Promise<T>>) {
+export function createAsyncRuntime<T>(executable: Action<Promise<T>>) {
     return client.createAsyncRuntime<T>(executable);
 }
