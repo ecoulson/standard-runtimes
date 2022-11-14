@@ -7,7 +7,8 @@ export class RuntimeService
     implements IRuntimeService
 {
     createRuntime<T>(runtime: Runtime<T>): Runtime<T> {
-        throw new Error('Method not implemented.');
+        runtime.id = this.idBroker.generateId();
+        return this.runtimeBroker.storeRuntime(runtime);
     }
 
     executeRuntime<T>(runtime: Runtime<T>): T {

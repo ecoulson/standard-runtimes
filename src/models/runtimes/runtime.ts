@@ -1,10 +1,9 @@
-import { ExceptionHandler } from '../exception-handlers/exception-handler';
-import { Executable } from '../executable/executable';
+import { Action, Func } from '@the-standard/types';
 
 export class Runtime<T> {
     constructor(
         public id?: string,
-        public logic?: Executable<T>,
-        public exceptionHandler?: ExceptionHandler<T>
+        public logic?: Action<T>,
+        public exceptionHandler?: Func<T, [Action<T>]>
     ) {}
 }
