@@ -10,8 +10,8 @@ describe('Runtime Service Test Suite', () => {
         test('Should execute a runtime successfully', () => {
             const expectedResult = 2;
             const logic = () => expectedResult;
-            const exceptionHandler = (logic: Action<number>) => {
-                return logic();
+            const exceptionHandler = (func: Action<number>) => {
+                return func();
             };
             const inputRuntime = new Runtime(logic, exceptionHandler);
 
@@ -35,9 +35,9 @@ describe('Runtime Service Test Suite', () => {
             const logic: Action<number> = () => {
                 throw new Exception();
             };
-            const exceptionHandler = (logic: Action<number>) => {
+            const exceptionHandler = (func: Action<number>) => {
                 try {
-                    return logic();
+                    return func();
                 } catch (error) {
                     throw new Exception('Something went wrong.');
                 }
@@ -54,8 +54,7 @@ describe('Runtime Service Test Suite', () => {
         test('Should execute a runtime successfully', async () => {
             const expectedResult = 2;
             const logic = () => Promise.resolve(expectedResult);
-            const exceptionHandler = (logic: Action<Promise<number>>) =>
-                logic();
+            const exceptionHandler = (func: Action<Promise<number>>) => func();
             const inputRuntime = new Runtime(logic, exceptionHandler);
 
             const actualResult = await service.executeAsyncRuntime(
@@ -81,9 +80,9 @@ describe('Runtime Service Test Suite', () => {
             const logic: Action<Promise<number>> = async () => {
                 throw new Exception();
             };
-            const exceptionHandler = async (logic: Action<Promise<number>>) => {
+            const exceptionHandler = async (func: Action<Promise<number>>) => {
                 try {
-                    return await logic();
+                    return await func();
                 } catch (error) {
                     throw new Exception('Something went wrong.');
                 }

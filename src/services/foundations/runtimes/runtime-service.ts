@@ -11,7 +11,7 @@ export class RuntimeService<T>
     executeRuntime(runtime: Runtime<T>): T {
         return this.executeRuntimeExceptionHandler(() => {
             this.validateRuntime(runtime);
-            let logic = () => runtime.logic!();
+            const logic = () => runtime.logic!();
             if (!isNil(runtime.exceptionHandler)) {
                 return runtime.exceptionHandler(logic);
             }
@@ -22,7 +22,7 @@ export class RuntimeService<T>
     async executeAsyncRuntime(runtime: Runtime<Promise<T>>): Promise<T> {
         return this.executeAsyncRuntimeExceptionHandler(() => {
             this.validateRuntime(runtime);
-            let logic = () => runtime.logic!();
+            const logic = () => runtime.logic!();
             if (!isNil(runtime.exceptionHandler)) {
                 return runtime.exceptionHandler(logic);
             }
