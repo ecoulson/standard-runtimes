@@ -1,12 +1,13 @@
 import { Action } from '@the-standard/types';
-import { ServiceRuntimeClient } from './clients/service-runtimes/service-runtime-client';
+import { AsyncRuntimeClient } from './clients/runtimes/async-runtime-client';
+import { RuntimeClient } from './clients/runtimes/runtime-client';
 
-const client = new ServiceRuntimeClient();
-
-export function createRuntime<T>(executable: Action<T>) {
-    return client.createRuntime<T>(executable);
+export function createRuntime<T>(logic: Action<T>) {
+    const client = new RuntimeClient();
+    return client.withLogic(logic);
 }
 
-export function createAsyncRuntime<T>(executable: Action<Promise<T>>) {
-    return client.createAsyncRuntime<T>(executable);
+export function createAsyncRuntime<T>(logic: Action<Promise<T>>) {
+    const client = new AsyncRuntimeClient();
+    return client.withLogic(logic);
 }
