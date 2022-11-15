@@ -32,4 +32,30 @@ describe('Runtime Service Validations Test Suite', () => {
             expect(action).toThrowException(expectedException);
         });
     });
+
+    describe('executeAsyncRuntime', () => {
+        test('Should throw an null runtime exception when the runtime is null', async () => {
+            const inputRuntime = null as any;
+            const innerException = new NullRuntimeException();
+            const expectedException = new RuntimeValidationException(
+                innerException
+            );
+
+            const action = () => service.executeAsyncRuntime(inputRuntime);
+            await expect(action).toThrowExceptionAsync(expectedException);
+        });
+
+        test('Should throw an illegal runtime exception when the logic is null', async () => {
+            const inputRuntime = new Runtime<Promise<number>>(null, null);
+            const innerException = new IllegalRuntimeException(
+                new Map([['logic', ['Logic can not be null.']]])
+            );
+            const expectedException = new RuntimeValidationException(
+                innerException
+            );
+
+            const action = () => service.executeAsyncRuntime(inputRuntime);
+            await expect(action).toThrowExceptionAsync(expectedException);
+        });
+    });
 });
