@@ -50,7 +50,7 @@
         "@the-standard/exceptions": "^1.0.6",
         "@the-standard/partials": "^1.0.3",
         "@the-standard/types": "^1.0.0",
-        "@the-standard/validations": "^1.0.3",
+        "@the-standard/validations": "^1.0.4",
         "uuid": "^9.0.0"
     }
 }

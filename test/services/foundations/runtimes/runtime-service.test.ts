@@ -1,5 +1,6 @@
 import { Exception } from '@the-standard/exceptions';
 import { Action } from '@the-standard/types';
+import { validate } from '@the-standard/validations';
 import { Runtime } from '../../../../src/models/runtimes/runtime';
 import { RuntimeService } from '../../../../src/services/foundations/runtimes/runtime-service';
 
@@ -92,6 +93,10 @@ describe('Runtime Service Test Suite', () => {
 
             const action = () => service.executeAsyncRuntime(inputRuntime);
             await expect(action).toThrowExceptionAsync(expectedException);
+        });
+
+        test('Sandbox', () => {
+            validate(new Exception(), []);
         });
     });
 });
